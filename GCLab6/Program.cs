@@ -6,77 +6,67 @@ namespace GCLab6
     {
         static void Main(string[] args)
         {
-            //Prompt the user for a word
-            Console.WriteLine("Welcome to the Pig Latin Translator!");
             do
             {
-                Console.Write("Please enter a line you would love to translate:\n");
+                Console.WriteLine("Welcome to the Pig Latin Translator!");
+                Console.Write("Please enter a line you would love to translate:\n"); //Prompts user for a word.
 
-                string word = Console.ReadLine().ToLower().Trim(); //trims the extra spaces outside the users phrase.
-
-                string userWord = null; //final translation declared to be filled with words
-
-                if (!string.IsNullOrEmpty(word))  // test for empty input
+                string word = Console.ReadLine().ToLower().Trim(); //trims the extra spaces outside the users line.
+                string userWord = null;
+                if (!string.IsNullOrEmpty(word))  //if the user inputs nothing, it will ask to redo it.
                 {
-                    string[] wordsSplit = word.Split(' ');
-
-                    Console.WriteLine("\nTranslating...\n");
-
-                    for (int i = 0; i < wordsSplit.Length; i++)
+                    string[] split = word.Split(' ');
+                    for (int i = 0; i < split.Length; i++)
                     {
-                        string userWord2 = wordsSplit[i];
+                        string userWord2 = split[i];
 
-                        //find if it contains numbers or punctuation
-                        char[] punctuation = "123456789!@#$%^&*()_+".ToCharArray();
+                        char[] punctuation = "+_()*&^%$#@!-0987654321".ToCharArray();
 
-                        bool containsPunctuation = userWord2.LastIndexOfAny(punctuation) >= 0;
+                        bool Punctuation = userWord2.LastIndexOfAny(punctuation) >= 0;
 
                         int firstVowel = FirstVowel(userWord2);
 
-                        if (!containsPunctuation)
+                        if (!Punctuation)
                         {
                             if (firstVowel == 0 || firstVowel == -1)
                             {
                                 userWord2 += "way ";
+                                //keeps the vowels in the front, just adds way to the end.
                                 userWord += userWord2;
-
                             }
                             else
                             {
-                                //swapping leading consonants onto the back
-                                userWord2 = userWord2.Substring(firstVowel) + userWord2.ToLower().Substring(0, firstVowel) + "ay ";
-
+                                userWord2 = userWord2.Substring(firstVowel) + userWord2.Substring(0, firstVowel) + "ay ";
+                                //moves any consonants in the front to the back, then adds ay.
                                 userWord += userWord2;
                             }
                         }
                         else
                             userWord += userWord2;
-                        //writes words with nums & symbols that don't need translating
                     }
                     Console.WriteLine(userWord);
                 }
                 else
                 {
-                    Console.WriteLine("You didn't enter a word to translate...");
+                    Console.WriteLine("Please enter a valid line to translate!");
                 }
-                Console.WriteLine("\nWould you like to try to translate another word or phrase (Y/N)?");
+                Console.WriteLine("Would you like to try to translate another word or phrase (y/n)?");
 
                 // ask if they want to run again
-            } while (Console.ReadLine().ToLower()[0] == 'y');
-
+            } while (Console.ReadLine()[0] == 'y');
             Console.WriteLine("Thank you for translating!" );
         }
-        public static int FirstVowel(string word)
+        public static int FirstVowel(string words)
         {
             int vposition = -1;
-            for (int i = 0; i < word.Length && vposition < 0; i++)
+            for (int i = 0; i < words.Length && vposition < 0; i++)
             {
-                char vowel = word[i];
+                char vowel = words[i];
 
-                if (vowel == 'a' || vowel == 'e' || vowel == 'o' || vowel == 'u' || vowel == 'i')
+                if (vowel == 'a' || vowel == 'e' || vowel == 'i' || vowel == 'o' || vowel == 'u')
                 {
                     vposition = i;
-                }
+                } 
             }
             return vposition;
         }
